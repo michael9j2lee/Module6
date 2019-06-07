@@ -2,25 +2,32 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+
+import CardController.Action;
 
 public class CardView extends JFrame
 {
 
-   /**
-    * 
-    */
+
    private static final long serialVersionUID = 1L;
    static int MAX_CARDS_PER_HAND = 56;
    static int MAX_PLAYERS = 2; // for now we only allow 2 person games
-   private int numCardsPerHand;
-   private int numPlayers;
+   private static int numCardsPerHand;
+   private static int numPlayers;
    
-   public JPanel pnlComputerHand;
-   public JPanel pnlHumanHand;
-   public JPanel pnlPlayArea;
+   JLabel[] computerLabels = new JLabel[numCardsPerHand];
+   JButton[] humanButtons = new JButton[numCardsPerHand];  
+   JLabel[] playedCardLabels  = new JLabel[numPlayers]; 
+   JLabel[] playLabelText  = new JLabel[numPlayers]; 
+
+   JPanel pnlComputerHand;
+   JPanel pnlHumanHand;
+   JPanel pnlPlayArea;
    
    CardView()
    {
@@ -37,6 +44,13 @@ public class CardView extends JFrame
       
       this.numPlayers = numPlayers;
       this.numCardsPerHand = numCardsPerHand;
+      
+	   for (int a = 0; a < numCardsPerHand; a++)
+	   {
+	     computerLabels[a] = new JLabel();
+	     humanButtons[a] = new JButton();
+	   }
+      
       
       pnlComputerHand = new JPanel();
       pnlComputerHand.setLayout(new GridLayout(1,numCardsPerHand));
