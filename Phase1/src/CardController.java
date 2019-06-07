@@ -1,163 +1,212 @@
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
 
-public class CardController extends CardModel{
 
-   private static Icon[][] iconCards = new ImageIcon[14][4]; // 14 = A thru K + joker
-   private static Icon iconBack;
-   static boolean iconsLoaded = false;
-   // static for the 57 icons and their corresponding labels
-   // normally we would not have a separate label for each card, but
-   // if we want to display all at once using labels, we need to.
-   
-	//   static final int NUM_CARD_IMAGES = 57; // 52 + 4 jokers + 1 back-of-card image
-	//   static Icon[] icon = new ImageIcon[NUM_CARD_IMAGES];
-
-   
-   static void loadCardIcons()
+class CardController extends CardModel
+{
+	CardController()
+	{
+		super();
+	}
+   public static void main(String[] args)
    {
+	 //Instatiate highCardGame
+	 int numPacksPerDeck = 1;
+     int numJokersPerPack = 2;
+     int numUnusedCardsPerPack = 0;
+     Card[] unusedCardsPerPack = null;
+     
+     CardGameFramework highCardGame = new CardGameFramework( 
+             numPacksPerDeck, numJokersPerPack,  
+             numUnusedCardsPerPack, unusedCardsPerPack, 
+             NUM_PLAYERS, NUM_CARDS_PER_HAND);
+     
+	  // start new game
+	  highCardGame.newGame();
+	  highCardGame.deal();
+	  Hand compHand = highCardGame.getHand(0);
+	  Hand playerHand = highCardGame.getHand(1);
+	  
+	  System.out.println(compHand.toString());
+	  System.out.println(playerHand.toString() + "\n\n");
+	  
+      int k;
+     
+      // establish main frame in which program will run
+      CardView myCardTable = new CardView("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
+      myCardTable.setSize(800, 600);
+      myCardTable.setLocationRelativeTo(null);
+      myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      
+      // show everything to the user
+      myCardTable.setVisible(true);
+      
+      // Create a win label
+      Font labelFont = new Font(Font.SANS_SERIF, Font.BOLD, 25);
+      JLabel winLabel = new JLabel();
+      winLabel.setFont(labelFont);
+      winLabel.setHorizontalAlignment(JLabel.CENTER);
+      JLabel empty = new JLabel();
+      
+      
+      // CREATE LABELS ----------------------------------------------------
+      //Iterate through number of cards
+      for (int a = 0; a < NUM_CARDS_PER_HAND; a++)
+      {
+    	 computerLabels[a] = new JLabel();
+    	 humanButtons[a] = new JButton();
+    	 humanButtons[a].addActionListener(new Action(a,compHand, playerHand, winLabel));
+      }
+      //Iterate through number of players
+      for (int b = 0; b < NUM_PLAYERS ; b++)
+      {
+    	  playedCardLabels[b] = new JLabel();
+    	  playedCardLabels[b].setHorizontalAlignment(JLabel.CENTER);
+    	  playLabelText[b] = new JLabel();
+    	  playLabelText[b].setHorizontalAlignment(JLabel.CENTER);
+      }
+      myCardTable.pnlPlayArea.add(playedCardLabels[0]); 
+      myCardTable.pnlPlayArea.add(winLabel);
+	  myCardTable.pnlPlayArea.add(playedCardLabels[1]);  
+	  myCardTable.pnlPlayArea.add(playLabelText[0]);
+	  myCardTable.pnlPlayArea.add(empty);
+	  myCardTable.pnlPlayArea.add(playLabelText[1]);
+      playLabelText[0].setText("Computer");
+	  playLabelText[1].setText("You");
+ 
 
-	   for(int i = 0; i <= 13; i++)
+	  GUICard.loadCardIcons();
+	  
+      // ADD LABELS TO PANELS -----------------------------------------
+      for (k = 0; k < NUM_CARDS_PER_HAND; k++)
+      {
+    	  computerLabels[k].setIcon(CardController.GUICard.getBackCardIcon());
+          myCardTable.pnlComputerHand.add(computerLabels[k]);
+          
+          humanButtons[k].setIcon(CardController.GUICard.getIcon(playerHand.inspectCard(k)));
+      	  myCardTable.pnlHumanHand.add(humanButtons[k]);
+      	  System.out.printf("%d%n", k);
+      }
+	  myCardTable.setVisible(true);
+   }
+   
+   static class Action implements ActionListener
+   {
+	   private int cardNumber;
+	   private Hand compHand;
+	   private Hand playerHand;
+	   private JLabel winLabel;
+	   
+	   public Action(int cardNumber, Hand compHand, Hand playerHand, JLabel winLabel)
 	   {
-		   for(int k = 0; k <=3; k++)
+		   this.cardNumber = cardNumber;
+		   this.compHand = compHand;
+		   this.playerHand = playerHand;
+		   this.winLabel = winLabel;
+	   }
+	   
+	   public void actionPerformed(ActionEvent e)
+	   {
+	      playedCardLabels[0].setIcon(CardController.GUICard.getIcon(compHand.inspectCard(cardNumber)));
+	      playedCardLabels[1].setIcon(CardController.GUICard.getIcon(playerHand.inspectCard(cardNumber)));
+	      
+	      Card compCard = compHand.inspectCard(cardNumber);
+	      
+	      Card playerCard = playerHand.inspectCard(cardNumber);
+	      
+	      System.out.println(compCard.toString());
+	      System.out.println(playerCard.toString());
+	      
+	      if(comparing(playerCard, compCard) == "WIN")
+	      {
+	         this.winLabel.setText("YOU WIN!");
+	      }
+	      else if(comparing(playerCard, compCard) == "LOSE"){
+	    	  winLabel.setText("YOU LOSE!");
+	      }
+	      else
+	      {
+	    	  winLabel.setText("YOU TIE!");
+	      }
+	      
+	   }
+	   
+	   static String comparing(Card b, Card a)
+	   {
+	      int suitA = getSuitNum(a);
+	      int suitB = getSuitNum(b);
+	      int valueA = valueAsInt(a);
+	      int valueB = valueAsInt(b);
+	      
+	      System.out.println("YOU : " + a + " COMPUTER : " + b);
+	      
+	      if (valueB > valueA)
+	      {
+	         return "WIN";
+	      }
+	      else if (valueA == valueB && suitA > suitB)
+	      {
+	         return "WIN";
+	      }
+	      else if(a.equals(b))
+	      {
+	         return "TIE";
+	      }
+	      else
+	         return "LOSE";
+	   }
+	 
+	   private static int valueAsInt(Card card)
+	   {
+		   char value = card.getValue();
+		   //System.out.printf("Value : %s%n",value);
+		   switch (value)
 		   {
-			   String filename = new String();
-			   filename = "images/" + turnIntIntoCardValue(i) + turnIntIntoCardSuit(k) +".gif";
-			   //System.out.print(filename);
-			   Icon image= new ImageIcon(filename);
-			   iconCards[i][k] = image;
+		   case 'A':
+			   return 13;
+		   case 'K':
+			   return 12;
+		   case 'Q':
+			   return 11;
+		   case 'J':
+			   return 10;
+		   case 'T':
+			   return 9;
+		   case 'X':
+			   return 0;
+		   default:
+			   int val = value - '0';
+			   //System.out.printf("DEFAULT : %d%n", val);
+			   return (val);
+		   }   
+	   }
+	   private static int getSuitNum(Card card)
+	   {
+		   Card.Suit suit = card.getSuit();
+		   //System.out.println("CARD =" +card.toString());
+		   if (suit == Card.Suit.SPADES)
+		   {
+			   	return 0;	   
 		   }
-		   
-		   iconBack = new ImageIcon("images/bk.gif");
-		   iconsLoaded = true;
-		   
+		   else if (suit == Card.Suit.DIAMONDS)
+		   {
+			   return 1;
+		   }
+		   else if (suit == Card.Suit.HEARTS) {
+			   return 2;
+		   }
+		   else if (suit == Card.Suit.CLUBS) {
+			   return 3;
+		   }
+		   // Failed
+		   else
+		   {
+			   return 4;
+		   }
 	   }
    }
-   
-   //accessor for BackCard
-	static public Icon getBackCardIcon()
-	{
-		return iconBack;
-	}
-   
-	//insert Card, get Icon
-	static public Icon getIcon(CardModel.Card card)
-	{
-		return iconCards[valueAsInt(card)][suitAsInt(card)];
-	}
-	
-	
-    private static int valueAsInt(CardModel.Card card)
-    {
-       char value = card.getValue();
-       //System.out.printf("Value : %s%n",value);
-       switch (value)
-       {
-       case 'A':
-          return 13;
-       case 'K':
-          return 12;
-       case 'Q':
-          return 11;
-       case 'J':
-          return 10;
-       case 'T':
-          return 9;
-       case 'X':
-          return 0;
-       default:
-          int val = value - '1';
-          //System.out.printf("DEFAULT : %d%n", val);
-          return (val);
-       }
-             
-    }
-    private static int suitAsInt(Card card)
-    {
-       Card.Suit suit = card.getSuit();
-       //System.out.println("CARD =" +card.toString());
-       if (suit == Card.Suit.SPADES)
-       {
-             return 3;      
-       }
-       else if (suit == Card.Suit.HEARTS)
-       {
-          return 2;
-       }
-       else if (suit == Card.Suit.DIAMONDS) {
-          return 1;
-       }
-       else if (suit == Card.Suit.CLUBS) {
-          return 0;
-       }
-       // Failed
-       else
-       {
-          return 4;
-       }
-    }
-    
-    
-   // turns 0 - 13 into "A", "2", "3", ... "Q", "K", "X"
-   static String turnIntIntoCardValue(int k)
-   {
-	   if ( k > 0 && k < 9)
-	   {
-		   return String.valueOf(k+1);
-	   }
-	   else if(k == 0)
-	   {
-		   return "X";
-	   }
-	   else if (k==9)
-	   {
-		   return "T";
-	   }
-	   else if (k==10)
-	   {
-		   return "J";
-	   }
-	   else if (k == 11)
-	   {
-		   return "Q";
-	   }
-	   else if (k == 12)
-	   {
-		   return "K";
-	   }
-	   else if (k == 13)
-	   {
-		   return "A";
-	   }
-	   else
-	   {
-		   return "F";
-	   }
-
-      // an idea for a helper method (do it differently if you wish)
-   }
-   
-   // turns 0 - 3 into "C", "D", "H", "S"
-   static String turnIntIntoCardSuit(int j)
-   {
-  
-	   switch(j)
-	   {
-	   case 0:
-		   return "C";
-	   case 1:
-		   return "D";
-	   case 2:
-		   return "H";
-	   case 3:
-		   return "S";
-	   }
-	   return "F";
-      // an idea for another helper method (do it differently if you wish)
-	   //FAILED
-
-   }
-   
-}
-
-
+  }
