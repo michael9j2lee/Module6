@@ -4,30 +4,29 @@ import java.util.Random;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-
-
 public class CardModel {
 
 	   private static Icon[][] iconCards = new ImageIcon[14][4]; // 14 = A thru K + joker
 	   private static Icon iconBack;
 	   static boolean iconsLoaded = false;
+	  // public static final int NUM_CARD_IMAGES = 57; // 52 + 4 jokers + 1 back-of-card image
+
 	   
-	   void loadCardIcons()
+	   public static void loadCardIcons()
 	   {
 		   for(int i = 0; i <= 13; i++)
 		   {
 			   for(int k = 0; k <=3; k++)
 			   {
 				   String filename = new String();
-				   filename = "images\\" + turnIntIntoCardValue(i) + turnIntIntoCardSuit(k) +".gif";
+				   filename = "images/" + turnIntIntoCardValue(i) + turnIntIntoCardSuit(k) +".gif";
 				   System.out.println(filename);
 				   Icon image= new ImageIcon(filename);
 				   iconCards[i][k] = image;
 			   }
 			   
-			   iconBack = new ImageIcon("images/bk.gif");
+			   iconBack = new ImageIcon("images/BK.gif");
 			   iconsLoaded = true;
-			   
 		   }
 	   }
 	   
@@ -206,7 +205,8 @@ public class CardModel {
 	   }
 	}
 
-//class CardGameFramework  ----------------------------------------------------
+/****************************  CardGameFramework  ***********************/
+/***********************************************************************/
 class CardGameFramework
 {
  private static final int MAX_PLAYERS = 50;
@@ -374,6 +374,8 @@ class CardGameFramework
  }
 }
 
+/****************************  CARD  ***********************************/
+/***********************************************************************/
 class Card
 {
    public enum Suit {SPADES, HEARTS, CLUBS, DIAMONDS}; 
@@ -505,6 +507,9 @@ class Card
 
 }
 
+/****************************  Hand  ***********************************/
+/***********************************************************************/
+
 class Hand {
    private Card[] myCards;
    private int numCards;
@@ -630,7 +635,8 @@ class Hand {
     }
 }
 
-
+/****************************  DECK  ***********************************/
+/***********************************************************************/
 class Deck
 {
    public static final int CARDS_IN_PACK = 56;

@@ -19,6 +19,8 @@ public class CardController
    {
 	   this.view = view;
 	   this.model = model;
+	   compHand = null;
+	   playerHand = null;
    }
    
    public void startNewGame(int numPacksPerDeck, int numJokersPerPack,
@@ -31,6 +33,7 @@ public class CardController
 	             NUM_PLAYERS, NUM_CARDS_PER_HAND);
 		  
 		  // start new game
+
 		  highCardGame.newGame();
 		  highCardGame.deal();
 		  compHand = highCardGame.getHand(0);

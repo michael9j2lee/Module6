@@ -12,8 +12,6 @@ import javax.swing.border.TitledBorder;
 
 public class CardView extends JFrame
 {
-
-
    private static final long serialVersionUID = 1L;
    static int MAX_CARDS_PER_HAND = 56;
    static int MAX_PLAYERS = 2; // for now we only allow 2 person games
@@ -39,6 +37,10 @@ public class CardView extends JFrame
    // provite an acessor, but no mutator other than constructor.
    CardView(String title, int numCardsPerHand, int numPlayers)
    {
+	   setSize(800, 600);
+	   setLocationRelativeTo(null);
+	   setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	   
       Dimension size = getPreferredSize();
       size.height = 150;
       
@@ -57,7 +59,6 @@ public class CardView extends JFrame
 	     computerLabels[a] = new JLabel();
 	     humanButtons[a] = new JButton();
 	   }
-      
       
       pnlComputerHand = new JPanel();
       pnlComputerHand.setLayout(new GridLayout(1,numCardsPerHand));
@@ -88,5 +89,7 @@ public class CardView extends JFrame
       pnlPlayArea.setLayout(new GridLayout(2,3));
       pnlPlayArea.setPreferredSize(size);
       this.add(pnlPlayArea,BorderLayout.CENTER);
+      
+      setVisible(true);
    }
 }
