@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -7,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+
 
 
 
@@ -22,10 +24,14 @@ public class CardView extends JFrame
    JButton[] humanButtons;  
    JLabel[] playedCardLabels; 
    JLabel[] playLabelText; 
-
+   JLabel winLabel;
+   
    JPanel pnlComputerHand;
    JPanel pnlHumanHand;
    JPanel pnlPlayArea;
+   
+   JButton btnStartStop;
+
    
    CardView()
    {
@@ -48,18 +54,7 @@ public class CardView extends JFrame
       this.numCardsPerHand = numCardsPerHand;
       System.out.printf("CardView:%nNumPlayers : %d, NumCards : %d %n",numPlayers, numCardsPerHand);
       
-      computerLabels = new JLabel[numCardsPerHand];
-      humanButtons = new JButton[numCardsPerHand];  
-      playedCardLabels  = new JLabel[numPlayers]; 
-      playLabelText  = new JLabel[numPlayers]; 
-      
-      
-	   for (int a = 0; a < numCardsPerHand; a++)
-	   {
-	     computerLabels[a] = new JLabel();
-	     humanButtons[a] = new JButton();
-	   }
-      
+      //PANELS
       pnlComputerHand = new JPanel();
       pnlComputerHand.setLayout(new GridLayout(1,numCardsPerHand));
       
@@ -80,7 +75,32 @@ public class CardView extends JFrame
       pnlHumanHand.setPreferredSize(size);
       this.add(pnlHumanHand, BorderLayout.SOUTH);
       
+      computerLabels = new JLabel[numCardsPerHand];
+      humanButtons = new JButton[numCardsPerHand];  
+      playedCardLabels  = new JLabel[numPlayers]; 
+      playLabelText  = new JLabel[numPlayers]; 
       
+      
+	   for (int a = 0; a < numCardsPerHand; a++)
+	   {
+	     computerLabels[a] = new JLabel();
+	     humanButtons[a] = new JButton();
+	     pnlHumanHand.add(humanButtons[a]);
+	     pnlComputerHand.add(computerLabels[a]);
+	     
+	   }
+      
+     
+      
+	   //Iterate through number of players
+	   for (int b = 0; b < numPlayers ; b++)
+	   {
+		   playedCardLabels[b] = new JLabel();
+		   playedCardLabels[b].setHorizontalAlignment(JLabel.CENTER);
+		   playLabelText[b] = new JLabel();
+		   playLabelText[b].setHorizontalAlignment(JLabel.CENTER);
+	   }
+	  
       pnlPlayArea = new JPanel();
       TitledBorder borderPlay = new TitledBorder("Playing Area");
       borderPlay.setTitleJustification(TitledBorder.LEFT);
@@ -89,6 +109,23 @@ public class CardView extends JFrame
       pnlPlayArea.setLayout(new GridLayout(2,3));
       pnlPlayArea.setPreferredSize(size);
       this.add(pnlPlayArea,BorderLayout.CENTER);
+      
+	   Font labelFont = new Font(Font.SANS_SERIF, Font.BOLD, 25);
+	   winLabel = new JLabel();
+	   winLabel.setFont(labelFont);
+	   winLabel.setHorizontalAlignment(JLabel.CENTER);
+	   JLabel lblTimer = new JLabel();
+	   btnStartStop = new JButton();
+	   
+      
+	  pnlPlayArea.add(playedCardLabels[0]); 
+	  pnlPlayArea.add(winLabel);
+	  pnlPlayArea.add(playedCardLabels[1]);  
+	  pnlPlayArea.add(playLabelText[0]);
+	  pnlPlayArea.add(lblTimer);
+	  pnlPlayArea.add(playLabelText[1]);
+	  playLabelText[0].setText("Computer");
+	  playLabelText[1].setText("You");
       
       setVisible(true);
    }

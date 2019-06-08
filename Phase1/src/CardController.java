@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 
+
 public class CardController
 {
    static int NUM_CARDS_PER_HAND = 7;
@@ -13,6 +14,7 @@ public class CardController
    static CardModel model;
    static Hand compHand;
    static Hand playerHand;
+   Timer t;
 
    
    public CardController(CardModel model, CardView view)
@@ -27,6 +29,7 @@ public class CardController
 		   int numUnusedCardsPerPack, Card[] unusedCardsPerPack,
 		   int NUM_PLAYERS, int NUM_CARDS_PER_HAND)
    {  
+	   int k;
 	     CardGameFramework highCardGame = new CardGameFramework( 
 	             numPacksPerDeck, numJokersPerPack,  
 	             numUnusedCardsPerPack, unusedCardsPerPack, 
@@ -40,61 +43,40 @@ public class CardController
 		  playerHand = highCardGame.getHand(1);
   
 
-	   int k;
+	   
 		  
-	   // establish main frame in which program will run
-	  
-	   
-	   // Create a win label
-	   Font labelFont = new Font(Font.SANS_SERIF, Font.BOLD, 25);
-	   JLabel winLabel = new JLabel();
-	   winLabel.setFont(labelFont);
-	   winLabel.setHorizontalAlignment(JLabel.CENTER);
-	   JLabel empty = new JLabel();
-	   
-	   
-	   // CREATE LABELS ----------------------------------------------------
-	   //Iterate through number of cards
+	   // ActionListener add
 	   for (int a = 0; a < NUM_CARDS_PER_HAND; a++)
 	   {
-	     view.humanButtons[a].addActionListener(new Action(a,compHand, playerHand, winLabel, view.playedCardLabels));
+		   view.humanButtons[a].addActionListener(new playCard(a,compHand, playerHand, view.winLabel, view.playedCardLabels));
 	   }
 	   
-	   
-	   //Iterate through number of players
-	   for (int b = 0; b < NUM_PLAYERS ; b++)
-	   {
-		   view.playedCardLabels[b] = new JLabel();
-		   view.playedCardLabels[b].setHorizontalAlignment(JLabel.CENTER);
-		   view.playLabelText[b] = new JLabel();
-		   view.playLabelText[b].setHorizontalAlignment(JLabel.CENTER);
-	   }
-	   view.pnlPlayArea.add(view.playedCardLabels[0]); 
-	   view.pnlPlayArea.add(winLabel);
-	  view.pnlPlayArea.add(view.playedCardLabels[1]);  
-	  view.pnlPlayArea.add(view.playLabelText[0]);
-	  view.pnlPlayArea.add(empty);
-	  view.pnlPlayArea.add(view.playLabelText[1]);
-	  view.playLabelText[0].setText("Computer");
-	  view.playLabelText[1].setText("You");
-	
-	
 	  model.loadCardIcons();
 	  
 	   // ADD LABELS TO PANELS -----------------------------------------
 	   for (k = 0; k < NUM_CARDS_PER_HAND; k++)
 	   {
-		   view.computerLabels[k].setIcon(model.getBackCardIcon());
-	       view.pnlComputerHand.add(view.computerLabels[k]);
-	       
+		   view.computerLabels[k].setIcon(model.getBackCardIcon());    
 	       view.humanButtons[k].setIcon(model.getIcon(playerHand.inspectCard(k)));
-	        view.pnlHumanHand.add(view.humanButtons[k]);
 	        System.out.printf("%d%n", k);
 	   }
 	  view.setVisible(true);   
    }
+   
+   public void startStopTimer(ActionEvent e)
+   {
+	   
+   }
 	  
-	static class Action implements ActionListener
+	  
+	  
+	  
+	  
+	  
+
+   
+
+	static class playCard implements ActionListener
 	{
 	   private int cardNumber;
 	   private Hand compHand;
@@ -102,7 +84,7 @@ public class CardController
 	   private JLabel winLabel;
 	   private JLabel playedCardLabels[];
 	   
-	   public Action(int cardNumber, Hand compHand, Hand playerHand, JLabel winLabel, JLabel[] playedCardLabels)
+	   public playCard(int cardNumber, Hand compHand, Hand playerHand, JLabel winLabel, JLabel[] playedCardLabels)
 	   {
 	      this.cardNumber = cardNumber;
 	      this.compHand = compHand;
@@ -136,7 +118,21 @@ public class CardController
 	      }
 	      
 	   }
-	   
-	   
 	}
+	  
+	  static class TimerStartStop implements ActionListener
+	  {
+		  public void actionPerformed(ActionEvent e)
+		  {
+			  
+		  }
+
+	  
+	   
+	  
+	  
+	  
+	  }
+ 
+	
 }
