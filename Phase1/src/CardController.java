@@ -10,9 +10,9 @@ public class CardController
    static int NUM_CARDS_PER_HAND = 7;
    static int  NUM_PLAYERS = 2;
    private CardView view;
-   private static CardModel model;
-   private static Hand compHand;
-   private static Hand playerHand;
+   static CardModel model;
+   static Hand compHand;
+   static Hand playerHand;
 
    
    public CardController(CardModel model, CardView view)

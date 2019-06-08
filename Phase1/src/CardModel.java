@@ -19,8 +19,8 @@ public class CardModel {
 			   for(int k = 0; k <=3; k++)
 			   {
 				   String filename = new String();
-				   filename = "images/" + turnIntIntoCardValue(i) + turnIntIntoCardSuit(k) +".gif";
-				   //System.out.print(filename);
+				   filename = "images\\" + turnIntIntoCardValue(i) + turnIntIntoCardSuit(k) +".gif";
+				   System.out.println(filename);
 				   Icon image= new ImageIcon(filename);
 				   iconCards[i][k] = image;
 			   }
@@ -40,6 +40,7 @@ public class CardModel {
 		//insert Card, get Icon
 		public Icon getIcon(Card card)
 		{
+			System.out.printf("VALUE AS INT %d SUIT AS INT %d%n",valueAsInt(card), suitAsInt(card));
 			return iconCards[valueAsInt(card)][suitAsInt(card)];
 		}
 		

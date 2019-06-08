@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import CardController.Action;
+
 
 public class CardView extends JFrame
 {
@@ -20,10 +20,10 @@ public class CardView extends JFrame
    private static int numCardsPerHand;
    private static int numPlayers;
    
-   JLabel[] computerLabels = new JLabel[numCardsPerHand];
-   JButton[] humanButtons = new JButton[numCardsPerHand];  
-   JLabel[] playedCardLabels  = new JLabel[numPlayers]; 
-   JLabel[] playLabelText  = new JLabel[numPlayers]; 
+   JLabel[] computerLabels;
+   JButton[] humanButtons;  
+   JLabel[] playedCardLabels; 
+   JLabel[] playLabelText; 
 
    JPanel pnlComputerHand;
    JPanel pnlHumanHand;
@@ -44,6 +44,13 @@ public class CardView extends JFrame
       
       this.numPlayers = numPlayers;
       this.numCardsPerHand = numCardsPerHand;
+      System.out.printf("CardView:%nNumPlayers : %d, NumCards : %d %n",numPlayers, numCardsPerHand);
+      
+      computerLabels = new JLabel[numCardsPerHand];
+      humanButtons = new JButton[numCardsPerHand];  
+      playedCardLabels  = new JLabel[numPlayers]; 
+      playLabelText  = new JLabel[numPlayers]; 
+      
       
 	   for (int a = 0; a < numCardsPerHand; a++)
 	   {
