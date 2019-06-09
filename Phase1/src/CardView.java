@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,6 +30,7 @@ public class CardView extends JFrame
    JPanel pnlComputerHand;
    JPanel pnlHumanHand;
    JPanel pnlPlayArea;
+   JLabel lblTimer;
    
    JButton btnStartStop;
 
@@ -108,24 +110,43 @@ public class CardView extends JFrame
       pnlPlayArea.setBorder(borderPlay);
       pnlPlayArea.setLayout(new GridLayout(2,3));
       pnlPlayArea.setPreferredSize(size);
-      this.add(pnlPlayArea,BorderLayout.CENTER);
+
       
 	   Font labelFont = new Font(Font.SANS_SERIF, Font.BOLD, 25);
 	   winLabel = new JLabel();
 	   winLabel.setFont(labelFont);
 	   winLabel.setHorizontalAlignment(JLabel.CENTER);
-	   JLabel lblTimer = new JLabel();
+	   
+	   
+	   // TIMER PANEL
+	   
+	   JPanel pnlTimer = new JPanel();
+	   pnlTimer.setLayout(new GridLayout(2,0));
+	   
+	   lblTimer = new JLabel();
+	   lblTimer = new JLabel();
+	   lblTimer.setHorizontalAlignment(JLabel.CENTER);
+	   lblTimer.setText("0");
+	   lblTimer.setBorder(BorderFactory.createTitledBorder("Current Time"));
 	   btnStartStop = new JButton();
+	   btnStartStop.setSize(5,5);
+	   btnStartStop.setText("Start/Stop");
+
+	   pnlTimer.add(lblTimer);
+	   pnlTimer.add(btnStartStop);
+	   
 	   
       
 	  pnlPlayArea.add(playedCardLabels[0]); 
 	  pnlPlayArea.add(winLabel);
 	  pnlPlayArea.add(playedCardLabels[1]);  
 	  pnlPlayArea.add(playLabelText[0]);
-	  pnlPlayArea.add(lblTimer);
+	  pnlPlayArea.add(pnlTimer);
 	  pnlPlayArea.add(playLabelText[1]);
 	  playLabelText[0].setText("Computer");
 	  playLabelText[1].setText("You");
+	  
+      this.add(pnlPlayArea,BorderLayout.CENTER);
       
       setVisible(true);
    }

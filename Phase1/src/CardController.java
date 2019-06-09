@@ -51,6 +51,16 @@ public class CardController
 		   view.humanButtons[a].addActionListener(new playCard(a,compHand, playerHand, view.winLabel, view.playedCardLabels));
 	   }
 	   
+	   view.btnStartStop.addActionListener(new ActionListener()
+	   {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			TimerThread timerThread = new TimerThread();
+			timerThread.start();
+		}
+	   });
+	   
 	  model.loadCardIcons();
 	  
 	   // ADD LABELS TO PANELS -----------------------------------------
@@ -63,11 +73,34 @@ public class CardController
 	  view.setVisible(true);   
    }
    
-   public void startStopTimer(ActionEvent e)
+
+   
+   private class TimerThread extends Thread
    {
-	   
-   }
-	  
+	   @Override
+	   public void run()
+	   {
+		   int currentTime = Integer.valueOf(view.lblTimer.getText());
+		   currentTime++;
+		   view.lblTimer.setText(String.valueOf(currentTime));
+		   doNothing(1);
+		   
+	   }
+	   public void doNothing(int milliseconds)
+		{
+			try
+			{
+				Thread.sleep(milliseconds);
+			}
+			catch(InterruptedException e)	
+			{
+				System.out.println("Unexpected interrupt");
+				System.exit(0);
+					
+				}
+			}
+   }// end packer inner class
+   
 	  
 	  
 	  
