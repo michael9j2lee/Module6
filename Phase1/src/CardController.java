@@ -150,19 +150,7 @@ public class CardController
 	   }
 	}
 	  
-	  static class TimerStartStop implements ActionListener
-	  {
-		  public void actionPerformed(ActionEvent e)
-		  {
-			  
-		  }
 
-	  
-	   
-	  
-	  
-	  
-	  }
  
 	
 }
