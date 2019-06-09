@@ -14,7 +14,7 @@ public class CardController
    static CardModel model;
    static Hand compHand;
    static Hand playerHand;
-   Timer t;
+   static Timer timer;
 
    
    public CardController(CardModel model, CardView view)
@@ -54,10 +54,13 @@ public class CardController
 	   view.btnStartStop.addActionListener(new ActionListener()
 	   {
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			TimerThread timerThread = new TimerThread();
-			timerThread.start();
+			int count = Integer.valueOf(view.lblTimer.getText());
+			
+			TimeClass timeClass = new TimeClass(count);
+			timer = new Timer(1000,timeClass);
+			timer.start();
 		}
 	   });
 	   
@@ -68,38 +71,33 @@ public class CardController
 	   {
 		   view.computerLabels[k].setIcon(model.getBackCardIcon());    
 	       view.humanButtons[k].setIcon(model.getIcon(playerHand.inspectCard(k)));
-	        System.out.printf("%d%n", k);
+	       System.out.printf("%d%n", k);
 	   }
 	  view.setVisible(true);   
    }
    
-
    
-   private class TimerThread extends Thread
+   
+   private class TimeClass implements ActionListener
    {
-	   @Override
-	   public void run()
+	   private int counter;
+	   
+	   TimeClass(int count)
 	   {
-		   int currentTime = Integer.valueOf(view.lblTimer.getText());
-		   currentTime++;
-		   view.lblTimer.setText(String.valueOf(currentTime));
-		   doNothing(1);
+		   this.counter = count;
+	   }
+	   @Override
+	   public void actionPerformed(ActionEvent e)
+	   {
+		   counter++;
+		   
+		   view.lblTimer.setText(Integer.toString(counter));
 		   
 	   }
-	   public void doNothing(int milliseconds)
-		{
-			try
-			{
-				Thread.sleep(milliseconds);
-			}
-			catch(InterruptedException e)	
-			{
-				System.out.println("Unexpected interrupt");
-				System.exit(0);
-					
-				}
-			}
    }// end packer inner class
+   
+   
+   
    
 	  
 	  
