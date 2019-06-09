@@ -15,6 +15,7 @@ public class CardController
    static Hand compHand;
    static Hand playerHand;
    static Timer timer;
+   static boolean startOrStop;
 
    
    public CardController(CardModel model, CardView view)
@@ -56,11 +57,22 @@ public class CardController
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			int count = Integer.valueOf(view.lblTimer.getText());
 			
-			TimeClass timeClass = new TimeClass(count);
-			timer = new Timer(1000,timeClass);
-			timer.start();
+			if(startOrStop)
+			{
+				timer.stop();
+				startOrStop = false;
+			}
+			else
+			{
+				int count = Integer.valueOf(view.lblTimer.getText());
+				
+				TimeClass timeClass = new TimeClass(count);
+				timer = new Timer(1000,timeClass);
+				timer.start();
+				startOrStop = true;
+			}
+
 		}
 	   });
 	   
@@ -75,8 +87,6 @@ public class CardController
 	   }
 	  view.setVisible(true);   
    }
-   
-   
    
    private class TimeClass implements ActionListener
    {
@@ -94,18 +104,7 @@ public class CardController
 		   view.lblTimer.setText(Integer.toString(counter));
 		   
 	   }
-   }// end packer inner class
-   
-   
-   
-   
-	  
-	  
-	  
-	  
-	  
-
-   
+   }// end packer inner class 
 
 	static class playCard implements ActionListener
 	{
